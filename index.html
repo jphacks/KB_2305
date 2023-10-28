@@ -1,29 +1,112 @@
-<!DOCTYPE html>
 <html lang="ja">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Vue.js TODO APP</title>
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="utf-8">
+    <title>board_app</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-analytics.js";
+        import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDK6V9RUiUvwha9ggFS6J_50enEn2BC4VU",
+            authDomain: "kb2305-5793d.firebaseapp.com",
+            projectId: "kb2305-5793d",
+            storageBucket: "kb2305-5793d.appspot.com",
+            messagingSenderId: "43780372610",
+            appId: "1:43780372610:web:a20c8a3e3965aad255dc9b",
+            measurementId: "G-FWPHQYX9MH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const analytics = getAnalytics(app);
+        Vue.component('board-head', {
+            template: '<table border="1">\
+        <thead class="board-list__upper">\
+            <tr>\
+            <th>Todo名</th>\
+            <th>期日</th>\
+            <th>備考</th>\
+            </tr>\
+        </thead>\
+        </table>',
+        })
+        Vue.component('board-list', {
+            template: '<table border="1">\
+        <thead class="board-list__upper">\
+            <tr>\
+            <th>{{name}}</th>\
+            <th>{{deadline}}</th>\
+            <th>{{message}}</th>\
+            </tr>\
+        </thead>\
+        </table>',
+            props: ['name', 'message','deadline',  'id'],
+        })
+
+        Vue.component('board-form', {
+            template: '<div class="form-area">Todo : <input v-model="name" placeholder="Name"> </br>期日: \
+            <input type="datetime-local" v-model="deadline" step="60"> </br>備考: \
+    <textarea v-model="message"  placeholder="option"></textarea> </br><button v-on:click="doAdd">入力完了</button></div>',
+            data: function () {
+                return {
+                    message: '',
+                    name: '',
+                    deadline: ''
+                }
+            },
+            methods: {
+                doAdd: function () {
+                    this.$emit('input', this.name, this.message, this.deadline)
+                    this.message = ''
+                    this.name = ''
+                    this.deadline = ''
+                }
+            }
+        })
+
+        var board = new Vue({
+            el: '#board',
+            data: {
+                lists: []
+            },
+            created: function () {
+                var vue = this;
+                const starCountRef = ref(database, 'board');
+                onValue(starCountRef, (snapshot) => {
+                    vue.lists = snapshot.val();
+                    console.log(snapshot.val())
+                });
+            },
+            methods: {
+                doAdd: function (name, message, deadline) {
+                    var now = new Date();
+                    push(ref(database, 'board'), {
+                        name: name,
+                        message: message,
+                        deadline: deadline,
+                    });
+                }
+            }
+        })
+    </script>
 </head>
 <body>
-  <div id="to-do">
-    <p>
-      NewTask:
-      <input type="text" v-model="newTask">
-      <button @click="addTodo()">Add</button>
-    </p>
-    <hr>
-    <ul>
-      <li v-for="todo in todos">
-        <input type="checkbox" v-model="todo.isCompleted">
-        <span :class="{ 'complete': todo.isCompleted }">{{ todo.task }}</span>
-        <button @click="deleteTodo(todo)">Delete</button>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Vue.js -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-  <script src="./main.js"></script>
+    <div id="board">
+        <h2 class="board-title">Todo</h2>
+        
+        <ul class="lists" style="list-style-type: none">
+            <board-head></board-head>
+            <board-list v-for="(list, key) in lists" :key="key" :name="list.name" :message="list.message"
+                :date="list.date" :deadline="list.deadline">
+            </board-list>
+        </ul>
+        
+        <board-form v-on:input="doAdd"></board-form>
+    </div>
 </body>
 </html>

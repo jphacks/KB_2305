@@ -1,0 +1,35 @@
+body{
+    background: #FFC766;
+  }
+  
+  #board{
+    width: 70%;
+    padding: 10px 0;
+    border: 1px solid #333;
+    border-radius: 0.75em / 0.75em;
+    margin: 0 auto;
+    background: #EFEFEF;
+  }
+  
+  .board-list{
+    margin: 15px 0;
+  }
+  
+  .board-list__upper{
+    font-weight: 600;
+  }
+  
+  .form-area, .board-title{
+    width: 90%;
+    margin: 0 auto;
+  }
+
+td,
+th {
+  border: 1px solid rgb(190, 190, 190);
+  padding: 5px 10px;
+}
+
+td {
+  text-align: center;
+}
