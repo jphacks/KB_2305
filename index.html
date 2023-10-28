@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue.js TODO APP</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="to-do">
+    <p>
+      NewTask:
+      <input type="text" v-model="newTask">
+      <button @click="addTodo()">Add</button>
+    </p>
+    <hr>
+    <ul>
+      <li v-for="todo in todos">
+        <input type="checkbox" v-model="todo.isCompleted">
+        <span :class="{ 'complete': todo.isCompleted }">{{ todo.task }}</span>
+        <button @click="deleteTodo(todo)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  <script src="./main.js"></script>
+</body>
+</html>
