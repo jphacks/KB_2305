@@ -8,12 +8,12 @@
   <!-- どのデバイスで見ても見え方を一緒にする = レスポンシブデザイン -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="style.css" rel="stylesheet" />
-    
+    <link rel="icon" href="logo.png">
   </head>
   <body>
     <div class="background">
       <p>
-        <h1 class="head_design">Todoアプリ</h1>
+        <img src="titleimage.png" alt="ST" width="20%" height="20%"> 
       </p>
       <p>
       <form enctype="multipart/form-data">
@@ -28,6 +28,7 @@
         やること: 
         <input type="text" name="todo" placeholder="todo" required><br>
       </div>
+      <img src="matrix.png" alt="ST" width="30%" height="30%"> 
       <div>
         優先度: 
         <select name="matrix" placeholder="matrix" required>
@@ -36,6 +37,7 @@
           <option value="3">3 重要でない×緊急である</option>
           <option value="4">4 重要でない×緊急でない</option>
         </select>
+        
       </div>
       <div>
         カテゴリー: 
@@ -79,10 +81,9 @@
         <th>終了時間</th>
         <th>期日</th>
         <th>備考</th>
-      </tr>
-      <tr>
+      
         {% for d in data %}
-          <div>
+        <tr>
             <td>{{d[0]}}</td>
             <td>{{d[1]}}</td>
             <td>{{d[2]}}</td>
@@ -91,9 +92,9 @@
             <td>{{d[5]}}</td>
             <td>{{d[6]}}</td>
             <td>{{d[7]}}</td>
-          </div>
+        </tr>
         {% endfor %}
-      </tr>
+      
     </table>
     </body>
 </html>

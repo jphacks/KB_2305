@@ -5,3 +5,11 @@
 .inputsentence{
   font-size: 15px;
 }
+
+th {
+  background-color: #00e2cf;  /* 背景色指定 */
+}
+
+td {
+  background-color: #e1fffd;  /* 背景色指定 */
+}

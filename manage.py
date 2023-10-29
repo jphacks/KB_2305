@@ -3,7 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import db
 
 from flask import Flask,render_template, request
-
+import datetime
 
 cred = credentials.Certificate("kb2305-5793d-firebase-adminsdk-vtb9d-db56bdc49e.json")
 firebase_admin.initialize_app(cred, {
@@ -20,11 +20,14 @@ def hello():
     modify_data = []
     users_ref = db.reference('/Todos')
     data = users_ref.get()
+    dt = datetime.datetime.now()
     if data !=None:
         for i in data:
-            print(str(i))
-            unmodify_data = [i['name'],i['todo'],int(i['matrix']),i['category'],i['start'],i['finish'],i['deadline'],i['option']]
+            unmodify_data = [i['name'],i['todo'],int(i['matrix']),i['category'],str(i['start'][0:10])+ ' ' +str(i['start'][11:16]),str(i['finish'][0:10])+ ' ' +str(i['finish'][11:16]),str(i['deadline'][0:10])+ ' ' +str(i['deadline'][11:16]),i['option']]
+            unmodify_data.append(int(i['deadline'][0:4])-int(dt.year))
             modify_data.append(unmodify_data)
+    modify_data = sorted(modify_data, reverse=False, key=lambda x: x[2]) 
+    modify_data = sorted(modify_data, reverse=False, key=lambda x: x[8]) 
     return render_template("index.html", data = modify_data)
 
 @app.route('/', methods=["GET", "POST"])
@@ -78,10 +81,13 @@ def require():
                 
                 })
         data = users_ref.get()
+        dt = datetime.datetime.now()
         for i in data:
-            print(str(i))
-            unmodify_data = [i['name'],i['todo'],int(i['matrix']),i['category'],i['start'],i['finish'],i['deadline'],i['option']]
+            unmodify_data = [i['name'],i['todo'],int(i['matrix']),i['category'],str(i['start'][0:10])+ ' ' +str(i['start'][11:16]),str(i['finish'][0:10])+ ' ' +str(i['finish'][11:16]),str(i['deadline'][0:10])+ ' ' +str(i['deadline'][11:16]),i['option']]
+            unmodify_data.append(int(i['deadline'][0:4])-int(dt.year))
             modify_data.append(unmodify_data)
+        modify_data = sorted(modify_data, reverse=False, key=lambda x: x[2]) 
+        modify_data = sorted(modify_data, reverse=False, key=lambda x: x[8]) 
     return render_template('index.html', data = modify_data) 
 
 ##データを取得する
