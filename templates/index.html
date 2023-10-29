@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+  <!-- あってもなくても動くけど入れといた方がいいメタタグ -->
+  <!-- 文字をutf-8に -->
+    <meta charset="utf-8">
+    <title>Specialize Todo</title>
+  <!-- どのデバイスで見ても見え方を一緒にする = レスポンシブデザイン -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="style.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+    <div class="background">
+      <p>
+        <h1 class="head_design">Todoアプリ</h1>
+      </p>
+      <p>
+      <form enctype="multipart/form-data">
+      <div class="inputsentence">
+        <b>やることを入力する</b>
+      </div>
+      <div>
+        名前: 
+        <input type="text" name="name" placeholder="name" required><br>
+      </div>
+      <div>
+        やること: 
+        <input type="text" name="todo" placeholder="todo" required><br>
+      </div>
+      <div>
+        優先度: 
+        <select name="matrix" placeholder="matrix" required>
+          <option value="1">1 重要である×緊急である</option>
+          <option value="2">2 重要である×緊急でない</option>
+          <option value="3">3 重要でない×緊急である</option>
+          <option value="4">4 重要でない×緊急でない</option>
+        </select>
+      </div>
+      <div>
+        カテゴリー: 
+        <select name="category" placeholder="category" required>
+          <option value="仕事">仕事</option>
+          <option value="アルバイト">アルバイト</option>
+          <option value="家事">家事</option>
+          <option value="呼び出し">呼び出し</option>
+          <option value="学校の課題">学校の課題</option>
+          <option value="配達">配達</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+      <div>
+        期日: 
+        <input type="datetime-local" name="deadline"  placeholder="deadline" required><br>
+      </div>
+      <div>
+        開始予定時間: 
+        <input type="datetime-local" name="start"  placeholder="start" required><br>
+      </div>
+      <div>
+        終了予定時間: 
+        <input type="datetime-local" name="finish"  placeholder="finish" required><br>
+      </div>
+      <div>
+        備考: 
+        <input type="text" name="option" placeholder="option"><br>
+      </div>
+      <button formmethod="post">更新</button>
+      </form>
+      </p>
+
+      <table border="1">
+      <tr>
+        <th>名前</th>
+        <th>やること</th>
+        <th>優先度</th>
+        <th>カテゴリー</th>
+        <th>開始時間</th>
+        <th>終了時間</th>
+        <th>期日</th>
+        <th>備考</th>
+      </tr>
+      <tr>
+        {% for d in data %}
+          <div>
+            <td>{{d[0]}}</td>
+            <td>{{d[1]}}</td>
+            <td>{{d[2]}}</td>
+            <td>{{d[3]}}</td>
+            <td>{{d[4]}}</td>
+            <td>{{d[5]}}</td>
+            <td>{{d[6]}}</td>
+            <td>{{d[7]}}</td>
+          </div>
+        {% endfor %}
+      </tr>
+    </table>
+    </body>
+</html>
